@@ -1,4 +1,5 @@
 from base import BaseCommand
+from server import start_api_server
 
 
 class Command(BaseCommand):
@@ -9,7 +10,11 @@ class Command(BaseCommand):
         return "v1.0.0"
 
     def add_parser(self, parser):
+        parser.add_argument("addrport", nargs="?", default="localhost:8000", help="start server by ip:port")
         return parser
 
     def handle(self, *args, **options):
-        pass
+        addport = options.pop("addrport", None)
+        if addport:
+            ip, port = addport.split(":")
+            start_api_server(ip, port)
