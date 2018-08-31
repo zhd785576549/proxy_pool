@@ -8,7 +8,7 @@ DATABASE = {
     "ENGINE": "mongodb",
     "USER": "spider_proxies",
     "PASSWORD": "spider_proxies",
-    "HOST": "localhost",
-    "PORT": "3306",
+    "HOST": "127.0.0.1",
+    "PORT": "27017",
     "NAME": "spider_proxies"
 }

@@ -4,9 +4,10 @@ import requests
 import random
 import time
 from db.interface import insert_proxy_http
+from tools.proxy import get_proxies
 
 
-class KuaiSpider(BaseSpider):
+class Spider(BaseSpider):
 
     def start(self):
         r = requests.get(url="https://www.kuaidaili.com/free", headers=self.get_headers())
@@ -14,25 +15,27 @@ class KuaiSpider(BaseSpider):
         final_page_num = selector.xpath("//div[@id='listnav']/ul/li/a")[-1].text
         page_range = range(1, int(final_page_num) + 1)
         for page_num in page_range:
+
             session = requests.Session()
             time.sleep(3)
             page_url = "https://www.kuaidaili.com/free/inha/{0}/".format(page_num)
-            r = session.get(url=page_url, headers=self.get_headers())
-            response = self.get_selector(r.text)
-            self.parse_proxies(response)
-            session.close()
+            try:
+                r = session.get(url=page_url, headers=self.get_headers(), proxies=get_proxies(), timeout=10)
+                response = self.get_selector(r.text)
+                print("TOTAL PAGES: %s, CUR PAGE: %s" % (final_page_num, page_num))
+                self.parse_proxies(response)
+            except Exception as e:
+                print(e)
+            finally:
+                session.close()
 
     def parse_proxies(self, response):
         trs = response.xpath("//div[@id='list']/table/tbody/tr")[1:]
         for tr in trs:
             ip = tr.xpath("td")[0].text
             port = tr.xpath("td")[1].text
-            anonymity = tr.xpath("td")[2].text
-            p_type = tr.xpath("td")[3].text
             locate = tr.xpath("td")[4].text
-            speed = tr.xpath("td")[5].text
-            verify_time = tr.xpath("td")[6].text
-            insert_proxy_http(ip=ip, port=port, anonymity=anonymity, p_type=p_type, locate=locate, verify_time=verify_time)
+            insert_proxy_http(ip=ip, port=port, locate=locate)
 
     def get_headers(self):
         headers = {

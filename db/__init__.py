@@ -9,8 +9,8 @@ def init_db():
     """
     connect(
         db=settings.DATABASE["NAME"],
-        username=settings.DATABASE["USER"],
-        password=settings.DATABASE["PASSWORD"],
+        # username=settings.DATABASE["USER"],
+        # password=settings.DATABASE["PASSWORD"],
         host=settings.DATABASE["HOST"],
         port=int(settings.DATABASE["PORT"])
     )

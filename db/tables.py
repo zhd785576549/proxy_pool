@@ -11,10 +11,9 @@ import datetime
 
 
 class HttpProxy(Document):
-    id = IntField(primary_key=True, unique=True, null=False)                # primary key
+    # id = IntField(primary_key=True)                # primary key
     ip = StringField(max_length=20, unique=True, null=False)                # ip address
     port = StringField(max_length=10, unique=False, null=False)             # port
-    bo_online = BooleanField(default=True)                                   # whether host can reach the proxy
     locate = StringField(max_length=200)                                      # proxy address
     create_at = DateTimeField(default=datetime.datetime.now)                  # create time
     update_at = DateTimeField(default=datetime.datetime.now)                  # update time
@@ -24,7 +23,7 @@ class HttpProxy(Document):
 
 
 class HttpProxyQuality(Document):
-    id = IntField(primary_key=True, unique=True, null=False)   # primary key
+    # id = IntField(primary_key=True, unique=True, null=False)   # primary key
     anonymity = IntField()    # degree of anonymity: 1: high, 2: normal, 3: transport
     speed = FloatField()      # test speed of reach page with proxy
     bo_pass = BooleanField(default=True)   # whether host can reach the page with proxy
@@ -36,4 +35,17 @@ class HttpProxyQuality(Document):
 
     meta = {
         'collection': 'http_proxy_quality'
+    }
+
+
+class Logger(Document):
+    id = IntField(primary_key=True, unique=True, null=False)   # primary key
+    level = StringField(max_length=10, null=False)      # log level: debug, info, warn, error
+    module = StringField(max_length=20, null=False)     # log module
+    filename = StringField(max_length=20, null=False)   # log filename
+    message = StringField(max_length=1000, null=True)   # log message
+    create_at = DateTimeField(default=datetime.datetime.now)    # create time
+
+    meta = {
+        'collection': 'logger'
     }

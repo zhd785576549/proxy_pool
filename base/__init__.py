@@ -5,6 +5,11 @@ import os
 
 class BaseSpider(object):
 
+    name = ""
+
+    def run(self):
+        self.start()
+
     def start(self):
         raise NotImplementedError("This method must be provided.")
 
