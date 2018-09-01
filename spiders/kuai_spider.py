@@ -20,7 +20,7 @@ class Spider(BaseSpider):
             time.sleep(3)
             page_url = "https://www.kuaidaili.com/free/inha/{0}/".format(page_num)
             try:
-                r = session.get(url=page_url, headers=self.get_headers(), proxies=get_proxies(), timeout=10)
+                r = session.get(url=page_url, headers=self.get_headers(), timeout=10)
                 response = self.get_selector(r.text)
                 print("TOTAL PAGES: %s, CUR PAGE: %s" % (final_page_num, page_num))
                 self.parse_proxies(response)

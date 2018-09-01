@@ -17,6 +17,8 @@ def insert_proxy_http(**kwargs):
         http_proxy.save()
     except NotUniqueError as e:
         pass
+    except Exception as e:
+        print(e)
 
 
 def fetch_all():

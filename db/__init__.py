@@ -12,5 +12,6 @@ def init_db():
         # username=settings.DATABASE["USER"],
         # password=settings.DATABASE["PASSWORD"],
         host=settings.DATABASE["HOST"],
-        port=int(settings.DATABASE["PORT"])
+        port=int(settings.DATABASE["PORT"]),
+        connect=False
     )
