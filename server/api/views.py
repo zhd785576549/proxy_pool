@@ -1,4 +1,3 @@
-from flask import request
 from db.interface import fetch_all
 import random
 

@@ -1,0 +1,32 @@
+/*----------- login ----------------*/
+.login-form {
+    width: 350px;
+    margin: 100px auto 0px auto;
+    border: 1px solid #e1e1e1;
+    padding: 10px;
+}
+
+.login-form .login-title {
+    font-size: 15px !important:
+    margin-bottom: 10px !important;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.login-form .row {
+    position: relative;
+    margin-bottom: 15px;
+    width: 300px;
+    margin: 20px auto;
+}
+
+.login-form .row  i {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+}
+
+.login-form .row input {
+    padding-left: 30px;
+    width: 300px;
+}
