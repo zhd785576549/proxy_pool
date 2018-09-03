@@ -2,7 +2,6 @@ from mongoengine import Document
 from mongoengine import IntField
 from mongoengine import StringField
 from mongoengine import BooleanField
-from mongoengine import ListField
 from mongoengine import DateTimeField
 from mongoengine import FloatField
 from mongoengine import ReferenceField
@@ -11,7 +10,6 @@ import datetime
 
 
 class HttpProxy(Document):
-    # id = IntField(primary_key=True)                # primary key
     ip = StringField(max_length=20, unique=True, null=False)                # ip address
     port = StringField(max_length=10, unique=False, null=False)             # port
     locate = StringField(max_length=200)                                      # proxy address
@@ -22,14 +20,27 @@ class HttpProxy(Document):
     }
 
 
+class VerifyProject(Document):
+
+    name = StringField(max_length=100, unique=True, null=False)         # project name
+    target = URLField(null=False)                           # test url with proxy
+    timeout = IntField(default=0)                           # request timeout 0: no timeout, other: seconds
+    headers = StringField(max_length=1000, null=False)      # request header
+    proxy_type = IntField(default=0)                        # proxy http 0: http, 1: https
+    bo_enable = BooleanField(default=True)                  # whether enabled
+    brief = StringField(max_length=200, null=True)           # project brief
+    create_at = DateTimeField(default=datetime.datetime.now)  # create time
+    update_at = DateTimeField(default=datetime.datetime.now)  # update time
+
+    meta = {
+        'collection': 'verify_project'
+    }
+
+
 class HttpProxyQuality(Document):
-    # id = IntField(primary_key=True, unique=True, null=False)   # primary key
-    anonymity = IntField()    # degree of anonymity: 1: high, 2: normal, 3: transport
+    verify_project = ReferenceField(VerifyProject)      # verify project
     speed = FloatField()      # test speed of reach page with proxy
-    bo_pass = BooleanField(default=True)   # whether host can reach the page with proxy
-    http_proxy = ListField(ReferenceField(HttpProxy))  # http proxy
-    quality = IntField(default=0)   # proxy quality: bo_pass==0?0,anonymity*1000+int(speed*100)
-    target = URLField(null=False)   # test url with proxy
+    http_proxy = ReferenceField(HttpProxy)
     create_at = DateTimeField(default=datetime.datetime.now)      # create time
     update_at = DateTimeField(default=datetime.datetime.now)      # update time
 
@@ -39,7 +50,7 @@ class HttpProxyQuality(Document):
 
 
 class Logger(Document):
-    id = IntField(primary_key=True, unique=True, null=False)   # primary key
+    # id = IntField(primary_key=True, unique=True, null=False)   # primary key
     level = StringField(max_length=10, null=False)      # log level: debug, info, warn, error
     module = StringField(max_length=20, null=False)     # log module
     filename = StringField(max_length=20, null=False)   # log filename
@@ -48,4 +59,17 @@ class Logger(Document):
 
     meta = {
         'collection': 'logger'
+    }
+
+
+class User(Document):
+    username = StringField(max_length=200, unique=True, null=False)     # username
+    password = StringField(max_length=200, null=False)      # password md5 encode
+    is_superuser = BooleanField(default=False)              # whether superuser or not
+    is_staff = BooleanField(default=False)                   # whether can enter backend
+    create_at = DateTimeField(default=datetime.datetime.now)  # create time
+    update_at = DateTimeField(default=datetime.datetime.now)  # update time
+
+    meta = {
+        'collection': 'user'
     }

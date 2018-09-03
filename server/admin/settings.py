@@ -1,0 +1,15 @@
+import pymongo
+
+
+DEBUG = False
+SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'
+
+SESSION_TYPE = 'mongodb'
+SESSION_MONGODB = pymongo.MongoClient()
+SESSION_MONGODB_DB = 'spider_proxies'
+SESSION_MONGODB_COLLECT = 'session'
+SESSION_PERMANENT = False
+SESSION_USE_SIGNER = False
+SESSION_KEY_PREFIX = 'session:'
+SESSION_PERMANENT = True
+PERMANENT_SESSION_LIFETIME = 60*60*24
