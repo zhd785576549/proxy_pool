@@ -70,6 +70,21 @@ class User(Document):
     create_at = DateTimeField(default=datetime.datetime.now)  # create time
     update_at = DateTimeField(default=datetime.datetime.now)  # update time
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
     meta = {
         'collection': 'user'
     }

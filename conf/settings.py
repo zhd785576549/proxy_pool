@@ -12,9 +12,3 @@ DATABASE = {
     "PORT": "27017",
     "NAME": "spider_proxies"
 }
-
-# SERVER
-ADMIN_SERVER = {
-    "SECRET_KEY": '_5#y2L"F4Q8z\n\xec]/'
-
-}
