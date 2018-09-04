@@ -40,15 +40,22 @@ app.add_url_rule("/", view_func=views.index)
 app.add_url_rule("/login", view_func=views.login, methods=["GET", "POST"])
 
 
+# Create admin
+
+admin = Admin(app, name="管理系统")
+
+# Add views
+admin.add_view(server_admin.UserAdmin(tables.User))
+admin.add_view(server_admin.HttpProxyAdmin(tables.HttpProxy))
+admin.add_view(server_admin.VerifyProjectAdmin(tables.VerifyProject))
+admin.add_view(server_admin.HttpProxyQualityAdmin(tables.HttpProxyQuality))
+
+
 def start_api_server(host, port):
-    # Create admin
-
-    admin = Admin(app, name="管理系统")
-
-    # Add views
-    admin.add_view(server_admin.UserAdmin(tables.User))
-    admin.add_view(server_admin.HttpProxyAdmin(tables.HttpProxy))
-    admin.add_view(server_admin.VerifyProjectAdmin(tables.VerifyProject))
-    admin.add_view(server_admin.HttpProxyQualityAdmin(tables.HttpProxyQuality))
-
+    """
+    Start server
+    :param host:
+    :param port:
+    :return:
+    """
     app.run(host=host, port=port)
