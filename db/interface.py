@@ -44,11 +44,12 @@ def fetch_all_enabled_verify_project():
     return verify_project_list
 
 
-def insert_http_proxy_quality(verify_project_obj, http_proxy_obj, speed):
+def insert_http_proxy_quality(verify_project_obj, http_proxy_obj, speed, unique_key):
     http_proxy_quality = HttpProxyQuality()
     http_proxy_quality.http_proxy = http_proxy_obj
     http_proxy_quality.verify_project = verify_project_obj
     http_proxy_quality.speed = speed
+    http_proxy_quality.unique_key = unique_key
     http_proxy_quality.save()
 
 
