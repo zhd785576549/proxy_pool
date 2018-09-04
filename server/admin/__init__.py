@@ -25,7 +25,7 @@ db = MongoEngine()
 app.config['MONGODB_SETTINGS'] = {
     'db': settings.DATABASE["NAME"],
     'host': settings.DATABASE["HOST"],
-    'port': settings.DATABASE["PORT"]
+    'port': int(settings.DATABASE["PORT"])
 }
 db.init_app(app)
 
