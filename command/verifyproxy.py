@@ -6,6 +6,7 @@ import json
 import requests
 from tools.agents import agents_list
 import random
+import traceback
 
 
 class Command(BaseCommand):
@@ -24,6 +25,7 @@ class Command(BaseCommand):
             timeout = verify_project.timeout
             headers = verify_project.headers
             proxy_type = verify_project.proxy_type
+            headers_dict = json.loads(headers)
             if proxy_type == 0:     # http
                 http_proxy_list = fetch_all_http_proxy()
             elif proxy_type == 1:       # https
@@ -33,7 +35,6 @@ class Command(BaseCommand):
             for http_proxy in http_proxy_list:
                 session = requests.Session()
                 try:
-                    headers = json.loads(headers)
                     proxies = None
                     if proxy_type == 0:
                         proxies = {
@@ -43,14 +44,15 @@ class Command(BaseCommand):
                         proxies = {
                             "https": "https://{0}:{1}".format(http_proxy.ip, http_proxy.port)
                         }
-                    headers["User-Agent"] = random.choice(agents_list)
+                        headers_dict["User-Agent"] = random.choice(agents_list)
                     if timeout == 0:
-                        r = session.get(url=target, headers=headers, proxies=proxies)
+                        r = session.get(url=target, headers=headers_dict, proxies=proxies)
                     else:
-                        r = session.get(url=target, headers=headers, proxies=proxies, timeout=int(timeout))
+                        r = session.get(url=target, headers=headers_dict, proxies=proxies, timeout=int(timeout))
                     speed = r.elapsed.total_seconds()
                     insert_http_proxy_quality(verify_project_obj=verify_project, http_proxy_obj=http_proxy, speed=speed)
                 except Exception as e:
                     print(e)
+                    traceback.print_exc()
                 finally:
                     session.close()
