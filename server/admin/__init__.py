@@ -7,6 +7,8 @@ from flask_admin import Admin
 from flask_mongoengine import MongoEngine
 from server.admin.admin import *
 from db import tables
+from db.interface import get_user_by_pk
+from db import exception
 from conf import settings
 
 
@@ -32,8 +34,11 @@ db.init_app(app)
 
 @login_manager.user_loader
 def get_user(user_id):
-    print(user_id)
-    return None
+    try:
+        user = get_user_by_pk(id=user_id)
+        return user
+    except exception.UserNotExist:
+        return None
 
 
 app.add_url_rule("/", view_func=views.index)

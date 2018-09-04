@@ -3,6 +3,7 @@ from db.tables import VerifyProject
 from db.tables import HttpProxyQuality
 from db.tables import User
 from mongoengine import errors
+from db import exception
 
 
 def insert_proxy_http(**kwargs):
@@ -66,3 +67,25 @@ def insert_user(username, password, is_superuser=False, is_staff=False):
     user.is_superuser = is_superuser
     user.is_staff = is_staff
     return user.save()
+
+
+def get_user_by_username(username):
+    """
+    Get user by username
+    :param username: [str] username
+    :return: [User]
+        object of User(Document)
+    """
+    user = User.objects(username=username)
+    if len(user):
+        return user[0]
+    else:
+        raise exception.UsernameNotExist
+
+
+def get_user_by_pk(id):
+    user = User.objects(id=id)
+    if len(user):
+        return user[0]
+    else:
+        raise exception.UserNotExist
