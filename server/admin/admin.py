@@ -1,4 +1,31 @@
 from flask_admin.contrib.mongoengine import ModelView
+from flask_admin import AdminIndexView
+from flask_admin import expose
+from flask_login import current_user
+from flask_login.login_manager import user_accessed
+from flask import request
+from flask import url_for
+from flask import redirect
+
+
+class MyAdminIndexView(AdminIndexView):
+
+    @expose("/")
+    def index(self):
+        if not current_user.is_authenticated:
+            next_url = request.url
+            login_url = '%s?next=%s' % (url_for('login'), next_url)
+            return redirect(login_url)
+        if current_user.is_active is False:
+            return user_accessed("user is not active")
+
+        if current_user.is_staff is False:
+            return user_accessed("user is not staff")
+
+        if current_user.is_active is True:
+            return super(MyAdminIndexView, self).index()
+        else:
+            return redirect(url_for("main"))
 
 
 class UserAdmin(ModelView):

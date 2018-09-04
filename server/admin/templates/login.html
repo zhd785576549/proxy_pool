@@ -3,18 +3,29 @@
 {% block title %}登陆{% endblock %}
 
 {% block body %}
-<form method="POST">
+
+<form method="POST" action="{{ url_for('login') }}">
     <div class="login-form">
         <div class="row">
             <span class="login-title">代理管理系统</span>
         </div>
         <div class="row">
             <i class="fa fa-user"></i>
-            <input class="form-control" type="text" placeholder="请输入用户名">
+            <input name="username" class="form-control" type="text" placeholder="请输入用户名">
+            {% if form %}
+                {% for msg in form.username.errors %}
+                {{ msg }} <br>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="row">
             <i class="fa fa-lock"></i>
-            <input class="form-control" type="password" placeholder="请输入密码">
+            <input name="password" class="form-control" type="password" placeholder="请输入密码">
+            {% if form %}
+                {% for msg in form.password.errors %}
+                {{ msg }} <br>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="row">
             <button class="btn btn-primary">登陆</button>

@@ -5,7 +5,7 @@ from server.admin import views
 from server.admin import settings
 from flask_admin import Admin
 from flask_mongoengine import MongoEngine
-from server.admin import admin as server_admin
+from server.admin.admin import *
 from db import tables
 from conf import settings
 
@@ -42,13 +42,13 @@ app.add_url_rule("/login", view_func=views.login, methods=["GET", "POST"])
 
 # Create admin
 
-admin = Admin(app, name="管理系统")
+admin = Admin(app, name="管理系统", index_view=MyAdminIndexView())
 
 # Add views
-admin.add_view(server_admin.UserAdmin(tables.User))
-admin.add_view(server_admin.HttpProxyAdmin(tables.HttpProxy))
-admin.add_view(server_admin.VerifyProjectAdmin(tables.VerifyProject))
-admin.add_view(server_admin.HttpProxyQualityAdmin(tables.HttpProxyQuality))
+admin.add_view(UserAdmin(tables.User))
+admin.add_view(HttpProxyAdmin(tables.HttpProxy))
+admin.add_view(VerifyProjectAdmin(tables.VerifyProject))
+admin.add_view(HttpProxyQualityAdmin(tables.HttpProxyQuality))
 
 
 def start_api_server(host, port):
