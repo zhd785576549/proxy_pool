@@ -27,6 +27,7 @@ class HttpProxy(Document):
 class VerifyProject(Document):
 
     name = StringField(max_length=100, unique=True, null=False)         # project name
+    sn = StringField(max_length=100, unique=True, null=True)   # project serial number
     target = URLField(null=False)                           # test url with proxy
     timeout = IntField(default=0)                           # request timeout 0: no timeout, other: seconds
     headers = StringField(max_length=1000, null=False)      # request header
@@ -47,6 +48,7 @@ class VerifyProject(Document):
 class HttpProxyQuality(Document):
     verify_project = ReferenceField(VerifyProject)      # verify project
     speed = FloatField()      # test speed of reach page with proxy
+    unique_key = StringField(max_length=200, null=False, unique=True)
     http_proxy = ReferenceField(HttpProxy)
     create_at = DateTimeField(default=datetime.datetime.now)      # create time
     update_at = DateTimeField(default=datetime.datetime.now)      # update time

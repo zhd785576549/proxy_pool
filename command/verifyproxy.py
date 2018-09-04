@@ -7,6 +7,7 @@ import requests
 from tools.agents import agents_list
 import random
 import traceback
+import hashlib
 
 
 class Command(BaseCommand):
@@ -50,9 +51,16 @@ class Command(BaseCommand):
                     else:
                         r = session.get(url=target, headers=headers_dict, proxies=proxies, timeout=int(timeout))
                     speed = r.elapsed.total_seconds()
-                    insert_http_proxy_quality(verify_project_obj=verify_project, http_proxy_obj=http_proxy, speed=speed)
+                    key = "sn:{0}:ip:{1}".format(verify_project.sn, http_proxy.ip)
+                    unique_key = hashlib.md5(key.encode('utf-8')).hexdigest()
+                    # print(unique_key)
+                    # print(http_proxy.ip)
+                    # print(verify_project.name)
+                    insert_http_proxy_quality(verify_project_obj=verify_project, http_proxy_obj=http_proxy,
+                                              speed=speed, unique_key=unique_key)
                 except Exception as e:
-                    print(e)
-                    traceback.print_exc()
+                    # print(e)
+                    # traceback.print_exc()
+                    pass
                 finally:
                     session.close()
