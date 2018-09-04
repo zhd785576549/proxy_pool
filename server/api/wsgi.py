@@ -1,6 +1,6 @@
 import sys
 from conf import settings
-from server import app
+from server.api import app
 from db import init_db
 
 # append system path

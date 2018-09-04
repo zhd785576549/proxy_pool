@@ -1,5 +1,5 @@
 from base import BaseCommand
-from server import start_api_server
+from server.admin import start_api_server
 
 
 class Command(BaseCommand):
