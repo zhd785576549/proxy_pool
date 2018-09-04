@@ -15,6 +15,10 @@ class HttpProxy(Document):
     locate = StringField(max_length=200)                                      # proxy address
     create_at = DateTimeField(default=datetime.datetime.now)                  # create time
     update_at = DateTimeField(default=datetime.datetime.now)                  # update time
+
+    def __str__(self):
+        return "{0}:{1}".format(self.ip, self.port)
+
     meta = {
         'collection': 'http_proxy'
     }
@@ -31,6 +35,9 @@ class VerifyProject(Document):
     brief = StringField(max_length=200, null=True)           # project brief
     create_at = DateTimeField(default=datetime.datetime.now)  # create time
     update_at = DateTimeField(default=datetime.datetime.now)  # update time
+
+    def __str__(self):
+        return self.name
 
     meta = {
         'collection': 'verify_project'
