@@ -6,6 +6,7 @@ from conf import settings
 import sys
 from argparse import Action
 import threading
+import time
 
 
 def get_spider_module_names():
@@ -22,10 +23,33 @@ def load_module(module_name):
 
 
 def start_spider_module(module_name):
-    print("start_spider_module")
     module = load_module(module_name)
     spider = module.Spider()
     spider.run()
+
+
+class ALlAction(Action):
+
+    def __init__(self,
+                 option_strings,
+                 dest="===ALL===",
+                 default="",
+                 help="start all spiders"):
+        super(ALlAction, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            default=default,
+            nargs=0,
+            help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        module_names = get_spider_module_names()
+        for module_name in module_names:
+            th = threading.Thread(target=start_spider_module, args=(module_name,))
+            th.daemon = True
+            th.start()
+        while True:
+            time.sleep(1)
 
 
 class ListAction(Action):
@@ -59,6 +83,7 @@ class Command(BaseCommand):
 
     def add_parser(self, parser):
         parser.add_argument("--list", "-l", action=ListAction)
+        parser.add_argument("--all", "-a", action=ALlAction)
         parser.add_argument("--target", "-t", required=False, help="execute spider module")
         return parser
 

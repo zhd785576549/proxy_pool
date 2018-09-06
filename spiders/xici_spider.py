@@ -29,7 +29,6 @@ class Spider(BaseSpider):
                 session.close()
 
     def parse_proxies(self, response):
-        print(response)
         trs = response.xpath("//table[@id='ip_list']/tr")[1:]
         for tr in trs:
             ip = tr.xpath("td")[1].text
