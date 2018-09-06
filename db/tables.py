@@ -24,6 +24,21 @@ class HttpProxy(Document):
     }
 
 
+class HttpsProxy(Document):
+    ip = StringField(max_length=20, unique=True, null=False)                # ip address
+    port = StringField(max_length=10, unique=False, null=False)             # port
+    locate = StringField(max_length=200)                                      # proxy address
+    create_at = DateTimeField(default=datetime.datetime.now)                  # create time
+    update_at = DateTimeField(default=datetime.datetime.now)                  # update time
+
+    def __str__(self):
+        return "{0}:{1}".format(self.ip, self.port)
+
+    meta = {
+        'collection': 'https_proxy'
+    }
+
+
 class VerifyProject(Document):
 
     name = StringField(max_length=100, unique=True, null=False)         # project name

@@ -1,4 +1,5 @@
 from db.tables import HttpProxy
+from db.tables import HttpsProxy
 from db.tables import VerifyProject
 from db.tables import HttpProxyQuality
 from db.tables import User
@@ -18,6 +19,24 @@ def insert_proxy_http(**kwargs):
 
     try:
         http_proxy.save()
+    except errors.NotUniqueError as e:
+        pass
+    except Exception as e:
+        print(e)
+
+
+def insert_proxy_https(**kwargs):
+    ip = kwargs.pop("ip")
+    port = kwargs.pop("port")
+    locate = kwargs.pop("locate", None)
+
+    https_proxy = HttpsProxy()
+    https_proxy.ip = ip
+    https_proxy.port = port
+    https_proxy.locate = locate
+
+    try:
+        https_proxy.save()
     except errors.NotUniqueError as e:
         pass
     except Exception as e:
