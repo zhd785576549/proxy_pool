@@ -1,4 +1,4 @@
-requests==2.19.1
+requests>=2.20.0
 lxml==4.2.4
 mongoengine==0.15.3
 flask==1.0.2
